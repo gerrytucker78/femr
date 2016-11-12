@@ -140,7 +140,7 @@ public class ResearchController extends Controller {
      * @param filterViewModel a viewmodel, not null
      * @return ResearchFilterItem or null if processing fails
      */
-    private ResearchFilterItem createResearchFilterItem(FilterViewModel filterViewModel) {
+    public static ResearchFilterItem createResearchFilterItem(FilterViewModel filterViewModel) {
 
         if (filterViewModel == null) {
 
