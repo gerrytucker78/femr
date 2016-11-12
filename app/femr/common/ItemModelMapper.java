@@ -128,7 +128,7 @@ public class ItemModelMapper implements IItemModelMapper {
     }
 
     @Override
-    public MissionTripItem createMissionTripItem(IMissionTrip missionTrip){
+    public MissionTripItem createMissionTripItem(IMissionTrip missionTrip, IMissionCity missionCity, IMissionCountry missionCountry){
 
         if (missionTrip == null){
 
@@ -137,19 +137,15 @@ public class ItemModelMapper implements IItemModelMapper {
 
         MissionTripItem missionTripItem = new MissionTripItem();
         missionTripItem.setId(missionTrip.getId());
-        if (missionTrip.getMissionCity() != null)
-            missionTripItem.setTripCity(missionTrip.getMissionCity().getName());
-        if (missionTrip.getMissionCity() != null)
-            missionTripItem.setTripCountry(missionTrip.getMissionCity().getMissionCountry().getName());
+        if (missionCity != null)
+            missionTripItem.setTripCity(missionCity.getName());
+        if (missionCountry != null)
+            missionTripItem.setTripCountry(missionCountry.getName());
         missionTripItem.setTripStartDate(missionTrip.getStartDate());
-        missionTripItem.setFriendlyTripStartDate(dateUtils.getFriendlyDate(missionTrip.getStartDate()));
         missionTripItem.setTripEndDate(missionTrip.getEndDate());
-        missionTripItem.setFriendlyTripEndDate(dateUtils.getFriendlyDate(missionTrip.getEndDate()));
+
         missionTripItem.setTeamName(missionTrip.getMissionTeam().getName());
 
-        missionTripItem.setFriendlyTripTitle(
-                StringUtils.generateMissionTripTitle(missionTripItem.getTeamName(), missionTripItem.getTripCountry(), missionTripItem.getTripStartDate(), missionTripItem.getTripEndDate())
-        );
 
         return missionTripItem;
     }

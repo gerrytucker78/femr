@@ -69,9 +69,10 @@ public interface IItemModelMapper {
      * Generate and provide an instance of MissionTripItem
      *
      * @param missionTrip the mission trip data bean, not null
-     * @return a new MissionTripItem or null if processing fails
+     * @param missionCity
+     *@param missionCountry @return a new MissionTripItem or null if processing fails
      */
-    MissionTripItem createMissionTripItem(IMissionTrip missionTrip);
+    MissionTripItem createMissionTripItem(IMissionTrip missionTrip, IMissionCity missionCity, IMissionCountry missionCountry);
 
 
     /**

@@ -34,7 +34,6 @@ import femr.data.models.mysql.*;
 import femr.util.stringhelpers.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,7 +102,7 @@ public class MissionTripService implements IMissionTripService {
                     .forEach(id -> missionTrip.addUser(dataModelMapper.createUser(id)));
 
             missionTripRepository.update(missionTrip);
-            response.setResponseObject(itemModelMapper.createMissionTripItem(missionTrip));
+            response.setResponseObject(itemModelMapper.createMissionTripItem(missionTrip, missionTrip.getMissionCity(), missionTrip.getMissionCity().getMissionCountry()));
         } catch (Exception ex) {
 
             response.addError("", ex.getMessage());
@@ -139,7 +138,7 @@ public class MissionTripService implements IMissionTripService {
             }
 
             missionTripRepository.update(missionTrip);
-            response.setResponseObject(itemModelMapper.createMissionTripItem(missionTrip));
+            response.setResponseObject(itemModelMapper.createMissionTripItem(missionTrip, missionTrip.getMissionCity(), missionTrip.getMissionCity().getMissionCountry()));
         } catch (Exception ex) {
 
             response.addError("", ex.getMessage());
@@ -245,7 +244,7 @@ public class MissionTripService implements IMissionTripService {
 
                 missionTripItems.addAll(missionTeam.getMissionTrips()
                         .stream()
-                        .map(itemModelMapper::createMissionTripItem)
+                        .map((missionTrip) -> itemModelMapper.createMissionTripItem(missionTrip, null, null))
                         .collect(Collectors.toList()));
 
                 missionItems.add(itemModelMapper.createMissionItem(missionTeam, missionTripItems));
@@ -276,7 +275,7 @@ public class MissionTripService implements IMissionTripService {
                     .eq("id", tripId);
 
             IMissionTrip missionTrip = missionTripRepository.findOne(missionTripExpressionList);
-            missionTripItem = itemModelMapper.createMissionTripItem(missionTrip);
+            missionTripItem = itemModelMapper.createMissionTripItem(missionTrip, missionTrip.getMissionCity(), missionTrip.getMissionCity().getMissionCountry());
 
             response.setResponseObject(missionTripItem);
         } catch (Exception ex) {
@@ -305,10 +304,9 @@ public class MissionTripService implements IMissionTripService {
 
             //start by getting all available mission teams. If you start by getting all the trips then
             //you might miss some teams that don't have a trip, yet.
-            missionTripItems.addAll(user.getMissionTrips()
-                    .stream()
-                    .map(itemModelMapper::createMissionTripItem)
-                    .collect(Collectors.toList()));
+            for (IMissionTrip trip: user.getMissionTrips()) {
+                missionTripItems.add(itemModelMapper.createMissionTripItem(trip, trip.getMissionCity(), trip.getMissionCity().getMissionCountry()));
+            }
 
             response.setResponseObject(missionTripItems);
         } catch (Exception ex) {

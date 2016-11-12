@@ -18,6 +18,9 @@
 */
 package femr.common.models;
 
+import femr.util.calculations.dateUtils;
+import femr.util.stringhelpers.StringUtils;
+
 import java.util.Date;
 
 public class MissionTripItem {
@@ -62,14 +65,11 @@ public class MissionTripItem {
 
     public void setTripStartDate(Date tripStartDate) {
         this.tripStartDate = tripStartDate;
+        this.friendlyTripStartDate = dateUtils.getFriendlyDate(this.tripStartDate);
     }
 
     public String getFriendlyTripStartDate() {
-        return friendlyTripStartDate;
-    }
-
-    public void setFriendlyTripStartDate(String friendlyTripStartDate) {
-        this.friendlyTripStartDate = friendlyTripStartDate;
+        return this.friendlyTripStartDate;
     }
 
     public Date getTripEndDate() {
@@ -78,14 +78,12 @@ public class MissionTripItem {
 
     public void setTripEndDate(Date tripEndDate) {
         this.tripEndDate = tripEndDate;
+        this.friendlyTripEndDate = dateUtils.getFriendlyDate(this.tripEndDate);
+
     }
 
     public String getFriendlyTripEndDate() {
         return friendlyTripEndDate;
-    }
-
-    public void setFriendlyTripEndDate(String friendlyTripEndDate) {
-        this.friendlyTripEndDate = friendlyTripEndDate;
     }
 
     public String getTeamName() {
@@ -97,10 +95,7 @@ public class MissionTripItem {
     }
 
     public String getFriendlyTripTitle() {
-        return friendlyTripTitle;
+        return StringUtils.generateMissionTripTitle(this.getTeamName(), this.getTripCountry(), this.getTripStartDate(), this.getTripEndDate());
     }
 
-    public void setFriendlyTripTitle(String friendlyTripTitle) {
-        this.friendlyTripTitle = friendlyTripTitle;
-    }
 }

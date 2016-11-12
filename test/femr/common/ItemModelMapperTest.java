@@ -2,7 +2,6 @@ package femr.common;
 
 import femr.common.models.CityItem;
 import femr.common.models.MissionTripItem;
-import femr.common.models.PatientItem;
 import femr.data.models.core.IMissionCity;
 import femr.data.models.core.IMissionCountry;
 import femr.data.models.core.IMissionTeam;
@@ -32,7 +31,6 @@ public class ItemModelMapperTest extends BaseTest {
     private static String CITY_NAME = "Test City Name";
     private static String COUNTRY_NAME = "USA";
 
-
     private static ItemModelMapper imm = new ItemModelMapper();
 
     @BeforeClass
@@ -51,8 +49,6 @@ public class ItemModelMapperTest extends BaseTest {
         endDate.setTime(now.getTimeInMillis());
 
 
-        expectedMissionTripItem.setFriendlyTripEndDate(dateUtils.getFriendlyDate(endDate));
-        expectedMissionTripItem.setFriendlyTripStartDate(dateUtils.getFriendlyDate(startDate));
         expectedMissionTripItem.setId(0);
         expectedMissionTripItem.setTeamName("Team");
         expectedMissionTripItem.setTripCity("City");
@@ -60,7 +56,6 @@ public class ItemModelMapperTest extends BaseTest {
         expectedMissionTripItem.setTripEndDate(endDate);
         expectedMissionTripItem.setTripStartDate(startDate);
 
-        expectedMissionTripItem.setFriendlyTripTitle(StringUtils.generateMissionTripTitle(expectedMissionTripItem.getTeamName(), expectedMissionTripItem.getTripCountry(), expectedMissionTripItem.getTripStartDate(), expectedMissionTripItem.getTripEndDate()));
 
     }
 
@@ -100,7 +95,7 @@ public class ItemModelMapperTest extends BaseTest {
         trip.setStartDate(expectedMissionTripItem.getTripStartDate());
 
 
-        MissionTripItem actualMissionTripItem = imm.createMissionTripItem(trip);
+        MissionTripItem actualMissionTripItem = imm.createMissionTripItem(trip, trip.getMissionCity(), trip.getMissionCity().getMissionCountry());
 
         assertEquals(expectedMissionTripItem.getId(), actualMissionTripItem.getId());
         assertEquals(expectedMissionTripItem.getFriendlyTripEndDate(), actualMissionTripItem.getFriendlyTripEndDate());
