@@ -23,6 +23,7 @@ import femr.common.models.*;
 import femr.data.daos.IRepository;
 import femr.data.models.core.IMissionTrip;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,14 +107,17 @@ public interface IMissionTripService {
      */
     ServiceResponse<TeamItem> createNewTeam(TeamItem teamItem);
 
+
     /**
-     * Create a new trip
      *
-     * @param tripItem everything except end date required TODO: separate into parameters
-     * @return a service response that contains a new TripItem that was created
-     * and/or errors if they exist.
+     * @param teamName - Required
+     * @param city - Required
+     * @param country - Required
+     * @param startDate - Required
+     * @param endDate - Not required
+     * @return
      */
-    ServiceResponse<MissionTripItem> createNewTrip(TripItem tripItem);
+    ServiceResponse<MissionTripItem> createNewTrip(String teamName, String city, String country, Date startDate, Date endDate);
 
     /**
      * Create a new city

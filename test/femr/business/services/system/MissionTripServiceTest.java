@@ -74,7 +74,7 @@ public class MissionTripServiceTest extends BaseTest {
         inputTripItem.setTripEndDate(endDate);
         inputTripItem.setTripStartDate(startDate);
 
-        ServiceResponse<MissionTripItem> response = service.createNewTrip(inputTripItem);
+        ServiceResponse<MissionTripItem> response = service.createNewTrip(inputTripItem.getTeamName(), inputTripItem.getTripCity(), inputTripItem.getTripCountry(), inputTripItem.getTripStartDate(), inputTripItem.getTripEndDate());
         MissionTripItem actualTripItem = response.getResponseObject();
         item = actualTripItem;
 

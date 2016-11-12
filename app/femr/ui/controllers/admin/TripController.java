@@ -59,16 +59,8 @@ public class TripController extends Controller {
         TripViewModelPost tripViewModelPost = tripViewModelPostForm.bindFromRequest().get();
         List<String> messages = new ArrayList<>();
 
-        //create the trip item from the viewmodel
-        TripItem tripItem = new TripItem();
-        tripItem.setTeamName(tripViewModelPost.getNewTripTeamName());
-        tripItem.setTripCity(tripViewModelPost.getNewTripCity());
-        tripItem.setTripCountry(tripViewModelPost.getNewTripCountry());
-        tripItem.setTripStartDate(tripViewModelPost.getNewTripStartDate());
-        tripItem.setTripEndDate(tripViewModelPost.getNewTripEndDate());
-
         //send trip item to service layer to create trip
-        ServiceResponse<MissionTripItem> newTripItemServiceResponse = missionTripService.createNewTrip(tripItem);
+        ServiceResponse<MissionTripItem> newTripItemServiceResponse = missionTripService.createNewTrip(tripViewModelPost.getNewTripTeamName(),tripViewModelPost.getNewTripCity(),tripViewModelPost.getNewTripCountry(),tripViewModelPost.getNewTripStartDate(),tripViewModelPost.getNewTripEndDate());
         if (newTripItemServiceResponse.hasErrors()) {
             messages.addAll(
                     newTripItemServiceResponse.getErrors()

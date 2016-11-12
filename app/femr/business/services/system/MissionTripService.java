@@ -34,6 +34,7 @@ import femr.data.models.mysql.*;
 import femr.util.stringhelpers.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -244,7 +245,7 @@ public class MissionTripService implements IMissionTripService {
 
                 missionTripItems.addAll(missionTeam.getMissionTrips()
                         .stream()
-                        .map((missionTrip) -> itemModelMapper.createMissionTripItem(missionTrip, null, null))
+                        .map((missionTrip) -> itemModelMapper.createMissionTripItem(missionTrip, missionTrip.getMissionCity(), missionTrip.getMissionCity().getMissionCountry()))
                         .collect(Collectors.toList()));
 
                 missionItems.add(itemModelMapper.createMissionItem(missionTeam, missionTripItems));
@@ -345,15 +346,15 @@ public class MissionTripService implements IMissionTripService {
     /**
      * {@inheritDoc}
      */
-    public ServiceResponse<MissionTripItem> createNewTrip(TripItem tripItem) {
+    public ServiceResponse<MissionTripItem> createNewTrip(String teamName, String city, String country, Date startDate, Date endDate) {
 
         ServiceResponse<MissionTripItem> response = new ServiceResponse<>();
-        if (tripItem == null ||
-                StringUtils.isNullOrWhiteSpace(tripItem.getTeamName()) ||
-                StringUtils.isNullOrWhiteSpace(tripItem.getTripCity()) ||
-                StringUtils.isNullOrWhiteSpace(tripItem.getTripCountry()) ||
-                tripItem.getTripStartDate() == null ||
-                tripItem.getTripEndDate() == null) {
+        if (
+                StringUtils.isNullOrWhiteSpace(teamName) ||
+                StringUtils.isNullOrWhiteSpace(city) ||
+                StringUtils.isNullOrWhiteSpace(country) ||
+                startDate == null ||
+                endDate == null) {
             response.addError("", "you're missing required fields, try again");
         } else {
             try {
@@ -361,12 +362,12 @@ public class MissionTripService implements IMissionTripService {
 
                 ExpressionList<MissionTeam> missionTeamExpressionList = QueryProvider.getMissionTeamQuery()
                         .where()
-                        .eq("name", tripItem.getTeamName());
+                        .eq("name", teamName);
                 IMissionTeam missionTeam = missionTeamRepository.findOne(missionTeamExpressionList);
 
                 ExpressionList<MissionCountry> missionCountryExpressionList = QueryProvider.getMissionCountryQuery()
                         .where()
-                        .eq("name", tripItem.getTripCountry());
+                        .eq("name", country);
                 IMissionCountry missionCountry = missionCountryRepository.findOne(missionCountryExpressionList);
 
                 if (missionCountry == null) {
@@ -379,20 +380,20 @@ public class MissionTripService implements IMissionTripService {
 
                     ExpressionList<MissionCity> missionCityExpressionList = QueryProvider.getMissionCityQuery()
                             .where()
-                            .eq("name", tripItem.getTripCity())
+                            .eq("name", city)
                             .eq("missionCountry", missionCountry);
                     IMissionCity missionCity = missionCityRepository.findOne(missionCityExpressionList);
 
                     if (missionCity == null) {
                         //city doesn't exist
-                        missionCity = dataModelMapper.createMissionCity(tripItem.getTripCity(), missionCountry);
+                        missionCity = dataModelMapper.createMissionCity(city, missionCountry);
                         missionCity = missionCityRepository.create(missionCity);
                     }
 
 
-                    IMissionTrip missionTrip = dataModelMapper.createMissionTrip(tripItem.getTripStartDate(), tripItem.getTripEndDate(), missionCity, missionTeam);
+                    IMissionTrip missionTrip = dataModelMapper.createMissionTrip(startDate, endDate, missionCity, missionTeam);
                     missionTrip = missionTripRepository.create(missionTrip);
-                    response.setResponseObject(itemModelMapper.createTripItem(missionTrip.getId(), missionTrip.getMissionTeam().getName(), missionTrip.getMissionCity().getName(), missionTrip.getMissionCity().getMissionCountry().getName(), missionTrip.getStartDate(), missionTrip.getEndDate()));
+                    response.setResponseObject(itemModelMapper.createTripItem(missionTrip.getId(), teamName, city, country, startDate, endDate));
 
                 }
             } catch (Exception ex) {
