@@ -126,7 +126,7 @@ public class PatientService implements IPatientService {
                 photoPath = savedPatient.getPhoto().getFilePath();
                 photoId = savedPatient.getPhoto().getId();
             }
-            PatientItem patientItem = itemModelMapper.createPatientItem(savedPatient.getId(),
+            PatientItem patientItem = PatientItem.createPatientItem(savedPatient.getId(),
                     savedPatient.getFirstName(),
                     savedPatient.getLastName(),
                     savedPatient.getCity(),
@@ -171,7 +171,7 @@ public class PatientService implements IPatientService {
                 photoId = newPatient.getPhoto().getId();
             }
             response.setResponseObject(
-                    itemModelMapper.createPatientItem(newPatient.getId(),
+                    PatientItem.createPatientItem(newPatient.getId(),
                             newPatient.getFirstName(),
                             newPatient.getLastName(),
                             newPatient.getCity(),

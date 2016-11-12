@@ -18,7 +18,12 @@
 */
 package femr.common.models;
 
+import femr.util.calculations.dateUtils;
+import femr.util.stringhelpers.StringUtils;
+
 import java.util.Date;
+
+
 
 public class PatientItem {
     private int Id;
@@ -220,4 +225,94 @@ public class PatientItem {
     public void setMonthsOld(Integer monthsOld) {
         this.monthsOld = monthsOld;
     }
+
+    /**
+     * Generate and provide an instance of PatientItem. See parameter descriptions for which fields must be filled out.
+     *
+     * @param id                 id of the patient, not null
+     * @param firstName          first name of the patient, not null
+     * @param lastName           last name of the patient, not null
+     * @param city               city that the patient lives in, not null
+     * @param address            address of the patient, may be null
+     * @param userId             id of the user that checked in the patient in triage, not null
+     * @param age                age of the patient, may be null
+     * @param sex                sex of the patient, may be null
+     * @param weeksPregnant      how many weeks pregnant the patient is, may be null
+     * @param heightFeet         how tall the patient is, may be null
+     * @param heightInches       how tall the patient is, may be null
+     * @param weight             how much the patient weighs, may be null
+     * @param pathToPatientPhoto filepath to the patient photo, may be null
+     * @param photoId            id of the patients photo, may be null
+     * @param ageClassification  age classification of the patient (adult,child, etc), may be null
+     * @return a new PatientItem or null if processing fails, may be null
+     */
+    public static PatientItem createPatientItem(int id,
+                                  String firstName,
+                                  String lastName,
+                                  String city,
+                                  String address,
+                                  int userId,
+                                  Date age,
+                                  String sex,
+                                  Integer weeksPregnant,
+                                  Integer heightFeet,
+                                  Integer heightInches,
+                                  Float weight,
+                                  String pathToPatientPhoto,
+                                  Integer photoId,
+                                  String ageClassification) {
+        if (StringUtils.isNullOrWhiteSpace(firstName) ||
+                StringUtils.isNullOrWhiteSpace(lastName) ||
+                StringUtils.isNullOrWhiteSpace(city)) {
+
+            return null;
+        }
+
+        PatientItem patientItem = new PatientItem();
+
+        //required fields
+        patientItem.setId(id);
+        patientItem.setFirstName(firstName);
+        patientItem.setLastName(lastName);
+        patientItem.setYearsOld(dateUtils.getYearsInteger(age));
+        patientItem.setMonthsOld(dateUtils.getMonthsInteger(age));
+        patientItem.setCity(city);
+        patientItem.setUserId(userId);
+        //optional fields
+        if (StringUtils.isNotNullOrWhiteSpace(address))
+            patientItem.setAddress(address);
+        if (StringUtils.isNotNullOrWhiteSpace(sex))
+            patientItem.setSex(sex);
+        if (age != null) {
+
+            patientItem.setAge(dateUtils.getAge(age));//age (int)
+            patientItem.setBirth(age);//date of birth(date)
+            patientItem.setFriendlyDateOfBirth(dateUtils.getFriendlyDate(age));
+
+        }
+        if (StringUtils.isNotNullOrWhiteSpace(pathToPatientPhoto) && photoId != null) {
+
+            patientItem.setPathToPhoto(pathToPatientPhoto);
+            patientItem.setPhotoId(photoId);
+        }
+        if (weeksPregnant != null)
+            patientItem.setWeeksPregnant(weeksPregnant);
+
+        if (heightFeet != null)
+            patientItem.setHeightFeet(heightFeet);
+        else
+            patientItem.setHeightFeet(0);
+
+        if (heightInches != null)
+            patientItem.setHeightInches(heightInches);
+        else
+            patientItem.setHeightInches(0);
+
+        if (weight != null)
+            patientItem.setWeight(weight);
+
+        return patientItem;
+
+    };
+
 }

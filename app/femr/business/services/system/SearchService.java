@@ -117,7 +117,7 @@ public class SearchService implements ISearchService {
                 pathToPhoto = savedPatient.getPhoto().getFilePath();
                 photoId = savedPatient.getPhoto().getId();
             }
-            PatientItem patientItem = itemModelMapper.createPatientItem(
+            PatientItem patientItem = PatientItem.createPatientItem(
                     savedPatient.getId(),
                     savedPatient.getFirstName(),
                     savedPatient.getLastName(),
@@ -190,7 +190,7 @@ public class SearchService implements ISearchService {
                 pathToPhoto = patient.getPhoto().getFilePath();
                 photoId = patient.getPhoto().getId();
             }
-            PatientItem patientItem = itemModelMapper.createPatientItem(
+            PatientItem patientItem = PatientItem.createPatientItem(
                     patient.getId(),
                     patient.getFirstName(),
                     patient.getLastName(),
@@ -524,7 +524,7 @@ public class SearchService implements ISearchService {
                     pathToPhoto = patient.getPhoto().getFilePath();
                     photoId = patient.getPhoto().getId();
                 }
-                patientItems.add(itemModelMapper.createPatientItem(
+                patientItems.add(PatientItem.createPatientItem(
                         patient.getId(),
                         patient.getFirstName(),
                         patient.getLastName(),
@@ -631,7 +631,7 @@ public class SearchService implements ISearchService {
                     pathToPhoto = patient.getPhoto().getFilePath();
                     photoId = patient.getPhoto().getId();
                 }
-                PatientItem currPatient = itemModelMapper.createPatientItem(
+                PatientItem currPatient = PatientItem.createPatientItem(
                         patient.getId(),
                         patient.getFirstName(),
                         patient.getLastName(),
