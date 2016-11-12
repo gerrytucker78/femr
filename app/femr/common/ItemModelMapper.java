@@ -437,7 +437,7 @@ public class ItemModelMapper implements IItemModelMapper {
      * {@inheritDoc}
      */
     @Override
-    public TripItem createTripItem(String teamName, String tripCity, String tripCountry, Date startDate, Date endDate) {
+    public MissionTripItem createTripItem(int id, String teamName, String tripCity, String tripCountry, Date startDate, Date endDate) {
 
         if (StringUtils.isNullOrWhiteSpace(teamName) ||
                 StringUtils.isNullOrWhiteSpace(tripCity) ||
@@ -448,8 +448,8 @@ public class ItemModelMapper implements IItemModelMapper {
             return null;
         }
 
-        TripItem tripItem = new TripItem();
-
+        MissionTripItem tripItem = new MissionTripItem();
+        tripItem.setId(id);
         tripItem.setTeamName(teamName);
         tripItem.setTripCity(tripCity);
         tripItem.setTripCountry(tripCountry);

@@ -345,9 +345,9 @@ public class MissionTripService implements IMissionTripService {
     /**
      * {@inheritDoc}
      */
-    public ServiceResponse<TripItem> createNewTrip(TripItem tripItem) {
+    public ServiceResponse<MissionTripItem> createNewTrip(TripItem tripItem) {
 
-        ServiceResponse<TripItem> response = new ServiceResponse<>();
+        ServiceResponse<MissionTripItem> response = new ServiceResponse<>();
         if (tripItem == null ||
                 StringUtils.isNullOrWhiteSpace(tripItem.getTeamName()) ||
                 StringUtils.isNullOrWhiteSpace(tripItem.getTripCity()) ||
@@ -392,7 +392,7 @@ public class MissionTripService implements IMissionTripService {
 
                     IMissionTrip missionTrip = dataModelMapper.createMissionTrip(tripItem.getTripStartDate(), tripItem.getTripEndDate(), missionCity, missionTeam);
                     missionTrip = missionTripRepository.create(missionTrip);
-                    response.setResponseObject(itemModelMapper.createTripItem(missionTrip.getMissionTeam().getName(), missionTrip.getMissionCity().getName(), missionTrip.getMissionCity().getMissionCountry().getName(), missionTrip.getStartDate(), missionTrip.getEndDate()));
+                    response.setResponseObject(itemModelMapper.createTripItem(missionTrip.getId(), missionTrip.getMissionTeam().getName(), missionTrip.getMissionCity().getName(), missionTrip.getMissionCity().getMissionCountry().getName(), missionTrip.getStartDate(), missionTrip.getEndDate()));
 
                 }
             } catch (Exception ex) {
@@ -454,5 +454,13 @@ public class MissionTripService implements IMissionTripService {
         }
 
         return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IRepository<IMissionTrip> getMissionTripRepository() {
+        return this.missionTripRepository;
     }
 }

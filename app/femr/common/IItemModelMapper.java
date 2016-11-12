@@ -206,7 +206,7 @@ public interface IItemModelMapper {
      * @param endDate     when the trip ends, not null
      * @return a new trip item or null if processing fails
      */
-    TripItem createTripItem(String teamName, String tripCity, String tripCountry, Date startDate, Date endDate);
+    MissionTripItem createTripItem(int id, String teamName, String tripCity, String tripCountry, Date startDate, Date endDate);
 
     /**
      * Generate and provide an instance of UserItem.

@@ -68,7 +68,7 @@ public class TripController extends Controller {
         tripItem.setTripEndDate(tripViewModelPost.getNewTripEndDate());
 
         //send trip item to service layer to create trip
-        ServiceResponse<TripItem> newTripItemServiceResponse = missionTripService.createNewTrip(tripItem);
+        ServiceResponse<MissionTripItem> newTripItemServiceResponse = missionTripService.createNewTrip(tripItem);
         if (newTripItemServiceResponse.hasErrors()) {
             messages.addAll(
                     newTripItemServiceResponse.getErrors()

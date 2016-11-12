@@ -113,6 +113,10 @@ public class MissionTrip implements IMissionTrip {
         this.users.add(user);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public void removeUser(int userId){
 

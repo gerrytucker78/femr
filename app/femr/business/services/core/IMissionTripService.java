@@ -20,6 +20,7 @@ package femr.business.services.core;
 
 import femr.common.dtos.ServiceResponse;
 import femr.common.models.*;
+import femr.data.daos.IRepository;
 import femr.data.models.core.IMissionTrip;
 
 import java.util.List;
@@ -112,7 +113,7 @@ public interface IMissionTripService {
      * @return a service response that contains a new TripItem that was created
      * and/or errors if they exist.
      */
-    ServiceResponse<TripItem> createNewTrip(TripItem tripItem);
+    ServiceResponse<MissionTripItem> createNewTrip(TripItem tripItem);
 
     /**
      * Create a new city
@@ -123,4 +124,6 @@ public interface IMissionTripService {
      * and/or errors if they exist.
      */
     ServiceResponse<CityItem> createNewCity(String cityName, String countryName);
+
+    IRepository<IMissionTrip> getMissionTripRepository();
 }
