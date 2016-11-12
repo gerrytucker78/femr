@@ -18,6 +18,8 @@
 */
 package femr.common.models;
 
+import femr.ui.models.research.FilterViewModel;
+
 import java.util.List;
 
 public class ResearchFilterItem {
@@ -126,4 +128,70 @@ public class ResearchFilterItem {
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
+
+    /**
+     * Generate and provide an instance of ResearchFilterItem.
+     * Moved from an implementation of IItemModelMapper on 6-10-2015 by Kevin
+     *
+     * @param primaryDataSet
+     * @param secondaryDataSet
+     * @param graphType
+     * @param startDate
+     * @param endDate
+     * @param groupFactor
+     * @param groupPrimary
+     * @param filterRangeStart
+     * @param filterRangeEnd
+     * @param medicationName
+     * @param missionTripId
+     * @return
+     */
+    public static ResearchFilterItem createResearchFilterItem(FilterViewModel fvm) {
+
+        if (fvm == null) {
+            return null;
+        }
+
+        String primaryDataSet = fvm.getPrimaryDataset();
+        String secondaryDataSet = fvm.getSecondaryDataset();
+        String graphType = fvm.getGraphType();
+        String startDate = fvm.getStartDate();
+        String endDate = fvm.getEndDate();
+        Integer groupFactor = fvm.getGroupFactor();
+        Boolean groupPrimary = fvm.isGroupPrimary();
+        Float filterRangeStart = fvm.getFilterRangeStart();
+        Float filterRangeEnd = fvm.getFilterRangeEnd();
+        String medicationName = fvm.getMedicationName();
+        Integer missionTripId = fvm.getMissionTripId();
+
+        ResearchFilterItem filterItem = new ResearchFilterItem();
+
+
+
+        filterItem.setPrimaryDataset(primaryDataSet);
+        filterItem.setSecondaryDataset(secondaryDataSet);
+        filterItem.setGraphType(graphType);
+        filterItem.setStartDate(startDate);
+        filterItem.setEndDate(endDate);
+
+        filterItem.setGroupFactor(groupFactor);
+        if (groupFactor != null && groupFactor > 0) {
+
+            filterItem.setGroupPrimary(groupPrimary);
+        } else {
+
+            filterItem.setGroupPrimary(false);
+        }
+
+        filterItem.setFilterRangeStart(filterRangeStart);
+        filterItem.setFilterRangeEnd(filterRangeEnd);
+        filterItem.setMedicationName(medicationName);
+        filterItem.setMissionTripId(missionTripId); //Andrew Trip Filter
+
+
+
+
+        return filterItem;
+    }
+
 }

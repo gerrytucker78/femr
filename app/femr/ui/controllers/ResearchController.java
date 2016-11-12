@@ -100,7 +100,7 @@ public class ResearchController extends Controller {
     public Result indexPost() {
 
         FilterViewModel filterViewModel = FilterViewModelForm.bindFromRequest().get();
-        ResearchFilterItem researchFilterItem = createResearchFilterItem(filterViewModel);
+        ResearchFilterItem researchFilterItem = ResearchFilterItem.createResearchFilterItem(filterViewModel);
 
         ServiceResponse<ResearchResultSetItem> response = researchService.retrieveGraphData(researchFilterItem);
         ResearchGraphDataModel graphModel = new ResearchGraphDataModel();
@@ -122,7 +122,7 @@ public class ResearchController extends Controller {
 
         FilterViewModel filterViewModel = FilterViewModelForm.bindFromRequest().get();
 
-        ResearchFilterItem filterItem = createResearchFilterItem(filterViewModel);
+        ResearchFilterItem filterItem = ResearchFilterItem.createResearchFilterItem(filterViewModel);
 
         ServiceResponse<File> exportServiceResponse = researchService.retrieveCsvExportFile(filterItem);
         File csvFile = exportServiceResponse.getResponseObject();
@@ -133,48 +133,6 @@ public class ResearchController extends Controller {
         return ok(csvFile);
     }
 
-    /**
-     * Generate and provide an instance of ResearchFilterItem.
-     * Moved from an implementation of IItemModelMapper on 6-10-2015 by Kevin
-     *
-     * @param filterViewModel a viewmodel, not null
-     * @return ResearchFilterItem or null if processing fails
-     */
-    public static ResearchFilterItem createResearchFilterItem(FilterViewModel filterViewModel) {
-
-        if (filterViewModel == null) {
-
-            return null;
-        }
-
-        ResearchFilterItem filterItem = new ResearchFilterItem();
-
-        filterItem.setPrimaryDataset(filterViewModel.getPrimaryDataset());
-        filterItem.setSecondaryDataset(filterViewModel.getSecondaryDataset());
-        filterItem.setGraphType(filterViewModel.getGraphType());
-        filterItem.setStartDate(filterViewModel.getStartDate());
-        filterItem.setEndDate(filterViewModel.getEndDate());
-
-        Integer groupFactor = filterViewModel.getGroupFactor();
-        filterItem.setGroupFactor(groupFactor);
-        if (groupFactor != null && groupFactor > 0) {
-
-            filterItem.setGroupPrimary(filterViewModel.isGroupPrimary());
-        } else {
-
-            filterItem.setGroupPrimary(false);
-        }
-
-        filterItem.setFilterRangeStart(filterViewModel.getFilterRangeStart());
-        filterItem.setFilterRangeEnd(filterViewModel.getFilterRangeEnd());
-        filterItem.setMedicationName(filterViewModel.getMedicationName());
-        filterItem.setMissionTripId(filterViewModel.getMissionTripId()); //Andrew Trip Filter
-
-
-
-
-        return filterItem;
-    }
 
     private ResearchGraphDataModel buildGraphModel(ResearchResultSetItem results) {
 
